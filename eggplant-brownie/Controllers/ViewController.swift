@@ -49,7 +49,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if let tableView = itensTableView {
             tableView.reloadData()
         } else {
-            Alerta(controller:  self).exibe()
+            Alerta(controller:  self).exibe(titulo: "Desculpe", mensagem: "Não foi possível atualizar a tabela")
         }
     }
     
@@ -83,29 +83,37 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             let item = itens[indexPath.row]
             if let position = itensSelecionados.index(of: item) {
-                itensSelecionados.remove(at: position)                
+                itensSelecionados.remove(at: position)
             }
         }
+        
     }
+        
+        func recuperaRefeicaoDoFormulario() -> Refeicao? {
+            guard let nomeDaRefeicao = nomeTextField?.text else {
+                return nil
+            }
+            
+            guard let felicidadeDaRefeicao = felicidadeTextField?.text, let felicidade = Int(felicidadeDaRefeicao) else {
+                return nil
+            }
+            
+            let refeicao = Refeicao(nome: nomeDaRefeicao, felicidade: felicidade, itens: itensSelecionados)
+            
+            return refeicao
+        }
+    
     
     // MARK: - IBActions
     
     @IBAction func adicionar(_ sender: Any) {
-        
-        guard let nomeDaRefeicao = nomeTextField?.text else {
-            return
-        }
-        
-        guard let felicidadeDaRefeicao = felicidadeTextField?.text, let felicidade = Int(felicidadeDaRefeicao) else {
-            return
-        }
-        
-        let refeicao = Refeicao(nome: nomeDaRefeicao, felicidade: felicidade, itens: itensSelecionados)
-        
-        print("comi \(refeicao.nome) e fiquei com felicidade: \(refeicao.felicidade)")
-        
+        if let refeicao = recuperaRefeicaoDoFormulario()  {
         delegate?.add(refeicao)
         navigationController?.popViewController(animated: true)
+        } else {
+            //Alerta
+            Alerta(controller: self).exibe(mensagem: "Erro ao ler dados do Formulário")
+        }
     }
 }
 

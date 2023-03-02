@@ -10,7 +10,6 @@ import UIKit
 
 class Refeicao: NSObject, NSCoding {
     
-    
     // MARK: - Atributos
     
     let nome: String
@@ -30,7 +29,7 @@ class Refeicao: NSObject, NSCoding {
     func encode(with aCoder: NSCoder) {
         aCoder.encode(nome, forKey: "nome")
         aCoder.encode(felicidade, forKey: "felicidade")
-        aCoder.encode(itens, forKey: "ïtens")
+        aCoder.encode(itens, forKey: "itens")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,11 +51,10 @@ class Refeicao: NSObject, NSCoding {
     }
     
     func detalhes() -> String {
-        
         var mensagem = "Felicidade: \(felicidade)"
         
         for item in itens {
-            mensagem += ", \(item.nome) - calorias \(item.calorias)"
+            mensagem += ", \(item.nome) - calorias: \(item.calorias)"
         }
         
         return mensagem
